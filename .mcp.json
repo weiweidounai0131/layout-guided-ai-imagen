@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "layout-guided-ai-imagen": {
+      "command": "node",
+      "args": [
+        "./mcp/server.mjs"
+      ]
+    }
+  }
+}

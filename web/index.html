@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>可控海报</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="editor-window" aria-label="可控海报轻量画板">
+        <header class="editor-chrome">
+          <button id="conversation-help-button" class="conversation-help-button" type="button" aria-label="如何返回对话" title="如何返回对话"><span aria-hidden="true">↩</span><span>如何返回对话</span></button>
+          <div class="brand-mark" aria-label="可控海报">可控海报</div>
+          <div class="chrome-actions">
+            <div id="status" class="status" data-tone="neutral" role="status" aria-live="polite">正在连接本地服务…</div>
+          </div>
+        </header>
+
+        <div class="session-meta" aria-label="会话信息">
+          <span>会话 <strong id="session-id">demo</strong></span>
+          <span>方案 <strong id="candidate-state">A</strong></span>
+          <span>版本 <strong id="revision-state">0</strong></span>
+          <span id="save-state">未保存</span>
+        </div>
+
+        <section class="workspace" aria-label="布局编辑区">
+          <aside class="candidate-panel panel" aria-label="布局候选">
+            <div class="panel-heading">
+              <div>
+                <span class="section-label">版式</span>
+                <h2>候选版式</h2>
+              </div>
+              <span id="candidate-count" class="count-chip">3 个候选</span>
+            </div>
+            <div id="candidate-list" class="candidate-list"></div>
+            <div class="brief-card">
+              <span class="section-label">需求摘要</span>
+              <p id="brief-summary">读取需求摘要中…</p>
+              <p id="catalog-policy" class="catalog-policy">版式目录状态读取中…</p>
+            </div>
+          </aside>
+
+          <section class="canvas-panel" aria-label="当前布局画板">
+            <div class="canvas-topline">
+              <div>
+                <span class="section-label">当前画板</span>
+                <h1 id="candidate-title">当前方案 A</h1>
+                <p id="canvas-guidance" class="canvas-guidance">画板只展示海报内容，局部说明见右侧序号。</p>
+              </div>
+              <div class="canvas-state" aria-live="polite">
+                <span id="stream-state" class="state-chip">等待操作流</span>
+                <span id="listener-state" class="state-chip">AI 监听未连接</span>
+                <span id="export-state" class="state-chip">双 PNG 未导出</span>
+              </div>
+            </div>
+
+            <div class="canvas-toolbar" aria-label="画板工具">
+              <button type="button" class="tool-button active" data-tool="select" aria-label="选择" title="选择"><span aria-hidden="true">↖</span></button>
+              <button type="button" class="tool-button" data-tool="freehand" aria-label="画笔" title="画笔"><span aria-hidden="true">⌁</span></button>
+              <button type="button" class="tool-button" data-tool="text" aria-label="文字" title="文字"><span aria-hidden="true">T</span></button>
+              <button type="button" class="tool-button" data-tool="rectangle" aria-label="矩形" title="矩形"><span aria-hidden="true">□</span></button>
+              <button type="button" class="tool-button" data-tool="rounded_rectangle" aria-label="圆角矩形" title="圆角矩形"><span aria-hidden="true">▢</span></button>
+              <button type="button" class="tool-button" data-tool="ellipse" aria-label="椭圆" title="椭圆"><span aria-hidden="true">○</span></button>
+              <button type="button" class="tool-button" data-tool="eraser" aria-label="对象橡皮" title="对象橡皮"><span aria-hidden="true">⌫</span></button>
+              <span class="toolbar-separator" aria-hidden="true"></span>
+              <div class="history-group" role="group" aria-label="编辑历史">
+                <button id="undo-button" class="history-button" type="button" aria-label="撤销" title="撤销（⌘/Ctrl+Z）"><svg class="history-icon" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="M6.75 3.25 3.5 6.5l3.25 3.25" /><path d="M3.8 6.5h5.3a5.4 5.4 0 0 1 5.4 5.4v.35" /></svg></button>
+                <button id="redo-button" class="history-button" type="button" aria-label="重做" title="重做（⌘/Ctrl+Shift+Z）"><svg class="history-icon" viewBox="0 0 18 18" aria-hidden="true" focusable="false"><path d="m11.25 3.25 3.25 3.25-3.25 3.25" /><path d="M14.2 6.5H8.9a5.4 5.4 0 0 0-5.4 5.4v.35" /></svg></button>
+              </div>
+            </div>
+
+            <div class="canvas-stage">
+              <div class="canvas-stage-viewport">
+                <div class="canvas-frame">
+                  <canvas id="sketch-canvas" width="800" height="1100" aria-label="可编辑海报布局画板"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <div class="canvas-footer">
+              <div class="palette" role="group" aria-label="颜色">
+                <button class="color-swatch rainbow" type="button" data-color="#1d1d1f" aria-label="自定义颜色" title="自定义颜色"><span aria-hidden="true">◌</span></button>
+                <button class="color-swatch selected" type="button" data-color="#1d1d1f" aria-label="黑色" title="黑色"></button>
+                <button class="color-swatch" type="button" data-color="#727784" aria-label="灰色" title="灰色"></button>
+                <button class="color-swatch" type="button" data-color="#a34f18" aria-label="棕色" title="棕色"></button>
+                <button class="color-swatch" type="button" data-color="#e02b2b" aria-label="红色" title="红色"></button>
+                <button class="color-swatch" type="button" data-color="#f36b16" aria-label="橙色" title="橙色"></button>
+                <button class="color-swatch" type="button" data-color="#f5a313" aria-label="黄色" title="黄色"></button>
+                <button class="color-swatch" type="button" data-color="#1c9d4c" aria-label="绿色" title="绿色"></button>
+                <button class="color-swatch" type="button" data-color="#128d85" aria-label="青绿色" title="青绿色"></button>
+                <button class="color-swatch" type="button" data-color="#18a8c8" aria-label="青色" title="青色"></button>
+                <button class="color-swatch" type="button" data-color="#2d65d7" aria-label="蓝色" title="蓝色"></button>
+                <button class="color-swatch" type="button" data-color="#5048d9" aria-label="靛蓝色" title="靛蓝色"></button>
+                <button class="color-swatch" type="button" data-color="#8c39d7" aria-label="紫色" title="紫色"></button>
+                <button class="color-swatch" type="button" data-color="#ce2c76" aria-label="玫红色" title="玫红色"></button>
+                <input id="color-input" type="color" value="#1d1d1f" aria-label="选择自定义颜色" />
+              </div>
+              <p class="canvas-note">序号对应右侧局部说明，确认后不进入成图。</p>
+            </div>
+          </section>
+
+          <aside class="annotation-panel panel" aria-label="局部细节说明">
+            <div class="panel-heading">
+              <div>
+                <span class="section-label">细节</span>
+                <h2>标记说明</h2>
+              </div>
+              <span id="annotation-count" class="count-chip">0 条</span>
+            </div>
+            <div id="annotation-list" class="annotation-list"></div>
+            <div class="annotation-form">
+              <label for="annotation-input">为选中对象添加局部说明</label>
+              <textarea id="annotation-input" rows="4" maxlength="1000" placeholder="例如：保持人物面部清晰，光线从左上方进入……"></textarea>
+              <button id="annotation-button" type="button" class="secondary-action">添加局部说明</button>
+            </div>
+          </aside>
+        </section>
+
+        <footer class="editor-footer">
+          <div class="footer-status-panel">
+            <span id="footer-title" class="footer-title">确认这套构图</span>
+            <span class="footer-description">请先点击左侧候选明确选择，再确认；确认后保存同一版本的 JSON、干净框架、标记框架和细节约束。</span>
+            <div id="confirmation-state" class="confirmation-state" role="status" aria-live="polite" hidden>
+              <strong id="confirmed-summary"></strong>
+              <span id="confirmed-reason">此版本已确认，当前只读。需要调整时点击“返回编辑”；产生新版本后需重新选择并确认。</span>
+              <button id="return-edit-button" type="button" class="secondary-action">返回编辑</button>
+            </div>
+          </div>
+          <div id="layout-change-form" class="layout-change-form" aria-label="自然语言修改">
+            <span class="footer-section-label">布局调整</span>
+            <label for="layout-change-input">告诉 AI 如何调整</label>
+            <span class="footer-section-description">描述结构变化，当前版本会先保留，收到结构化回调后再提交。</span>
+            <div class="layout-change-controls">
+              <input id="layout-change-input" type="text" maxlength="2000" placeholder="例如：标题下移一些，人物放大" />
+              <button id="layout-change-button" type="button" class="secondary-action">提交修改</button>
+            </div>
+            <span id="layout-change-state" class="change-state">等待 AI 监听</span>
+            <div class="layout-change-fallback-actions">
+              <button id="layout-change-copy-button" type="button" class="text-action" hidden>复制到原对话</button>
+              <button id="layout-change-cancel-button" type="button" class="text-action" hidden>取消等待</button>
+            </div>
+          </div>
+          <div class="footer-actions" aria-label="确认与版本操作">
+            <span class="footer-section-label">操作</span>
+            <div class="footer-secondary-actions">
+              <button id="restore-button" type="button" class="text-action">恢复初始版本</button>
+              <button id="reload-button" type="button" class="text-action">重新读取</button>
+            </div>
+            <button id="confirm-button" type="button" class="confirm-button" aria-label="确认当前方案并继续" title="确认当前方案并继续" aria-describedby="confirmation-state"><span aria-hidden="true">✓</span><span>确认方案</span></button>
+          </div>
+        </footer>
+      </section>
+    </main>
+    <div id="feedback-modal" class="feedback-modal" role="dialog" aria-modal="true" aria-labelledby="feedback-modal-title" aria-describedby="feedback-modal-message" hidden>
+      <div class="feedback-modal-backdrop" data-feedback-dismiss="true"></div>
+      <section class="feedback-modal-card" role="document">
+        <button id="feedback-modal-close" class="feedback-modal-close" type="button" aria-label="关闭提示">×</button>
+        <span id="feedback-modal-eyebrow" class="section-label">已收到</span>
+        <h2 id="feedback-modal-title">已收到你的确认，请回到对话查看后续生成</h2>
+        <p id="feedback-modal-message">画板已保存当前确认版本。</p>
+        <p id="feedback-modal-countdown" class="feedback-modal-countdown" aria-live="polite">10 秒后自动关闭</p>
+        <button id="feedback-modal-action" class="secondary-action" type="button">关闭提示</button>
+      </section>
+    </div>
+    <script src="/vendor/fabric.js"></script>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

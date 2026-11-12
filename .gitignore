@@ -1,0 +1,29 @@
+# Dependencies (install with `npm ci`; never commit caches)
+node_modules/
+
+# Runtime sessions, listeners, and generated artifacts
+.layout-guided-service.json
+*.state.json
+sessions/
+output/
+generated/
+*.local.json
+
+# Local packaging output
+dist/
+*.zip
+
+# Logs and OS noise
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+
+# Editor/IDE
+.idea/
+.vscode/
+*.swp
+
+# Development evidence and internal handoff notes (not published)
+docs/evidence/
+HANDOFF_V1.1.md

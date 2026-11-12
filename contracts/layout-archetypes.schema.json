@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://layout-guided-ai-imagen.local/contracts/layout-archetypes.schema.json",
+  "title": "Product-owned Layout Archetype Catalog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "provenance", "selection_policy", "archetypes"],
+  "properties": {
+    "schema_version": { "const": "layout-archetypes/1" },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "owner", "source", "inspiration", "boundary"],
+      "properties": {
+        "kind": { "const": "product-owned" },
+        "owner": { "const": "layout-guided-ai-imagen" },
+        "source": { "type": "string", "minLength": 1 },
+        "inspiration": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["publisher", "url", "scope", "exhaustive_catalog"],
+          "properties": {
+            "publisher": { "const": "OpenAI" },
+            "url": { "const": "https://openai.com/index/introducing-chatgpt-images-2-5/" },
+            "scope": { "type": "string", "minLength": 1 },
+            "exhaustive_catalog": { "const": false }
+          }
+        },
+        "boundary": { "type": "string", "minLength": 1 }
+      }
+    },
+    "selection_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["method", "execution", "model_call", "aesthetic_evidence", "host_role"],
+      "properties": {
+        "method": { "const": "deterministic_scoring" },
+        "execution": { "const": "local_fallback" },
+        "model_call": { "const": false },
+        "aesthetic_evidence": { "const": "unverified" },
+        "host_role": { "const": "inspect_and_explain" }
+      }
+    },
+    "archetypes": {
+      "type": "array",
+      "minItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "description", "fit_signals", "avoid_conditions", "composition_grammar", "slots", "difference_axes", "geometry", "schematic", "provenance"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "fit_signals": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["signal", "weight", "reason"],
+              "properties": {
+                "signal": { "type": "string", "minLength": 1 },
+                "weight": { "type": "number" },
+                "reason": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "avoid_conditions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["signal", "penalty", "reason"],
+              "properties": {
+                "signal": { "type": "string", "minLength": 1 },
+                "penalty": { "type": "number", "minimum": 0 },
+                "reason": { "type": "string", "minLength": 1 }
+              }
+            }
+          },
+          "composition_grammar": { "type": "string", "minLength": 1 },
+          "slots": { "type": "array", "minItems": 2, "items": { "type": "string", "minLength": 1 } },
+          "difference_axes": { "type": "array", "minItems": 2, "items": { "type": "string", "minLength": 1 } },
+          "provenance": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["kind", "owner", "source", "inspiration", "boundary"],
+            "properties": {
+              "kind": { "const": "product-owned" },
+              "owner": { "const": "layout-guided-ai-imagen" },
+              "source": { "type": "string", "minLength": 1 },
+              "inspiration": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["publisher", "url", "scope", "exhaustive_catalog"],
+                "properties": {
+                  "publisher": { "const": "OpenAI" },
+                  "url": { "const": "https://openai.com/index/introducing-chatgpt-images-2-5/" },
+                  "scope": { "type": "string", "minLength": 1 },
+                  "exhaustive_catalog": { "const": false }
+                }
+              },
+              "boundary": { "type": "string", "minLength": 1 }
+            }
+          },
+          "geometry": {
+            "type": "object",
+            "additionalProperties": true,
+            "required": ["hero"],
+            "properties": {
+              "hero": {
+                "type": "object",
+                "additionalProperties": true,
+                "required": ["x", "y", "width", "height"],
+                "properties": {
+                  "x": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+                  "y": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+                  "width": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 },
+                  "height": { "type": "number", "exclusiveMinimum": 0, "maximum": 1 }
+                }
+              }
+            }
+          },
+          "schematic": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["viewBox", "elements"],
+            "properties": {
+              "viewBox": { "const": "0 0 120 160" },
+              "elements": {
+                "type": "array",
+                "minItems": 2,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "required": ["type"],
+                  "properties": { "type": { "enum": ["rect", "circle", "line"] } }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,103 @@
+[
+  {
+    "scenario": "candidate-switch",
+    "brief": {
+      "schema_version": "poster-brief/1",
+      "brief_id": "stage4-candidate-switch",
+      "canvas": { "width": 640, "height": 880, "aspect_ratio": "8:11", "source": "stage4-fixture" },
+      "copy": [
+        { "id": "title", "role": "title", "text": "候选切换的空间关系", "must_preserve": true },
+        { "id": "subtitle", "role": "subtitle", "text": "A、B、C 各自保留独立 revision", "must_preserve": true },
+        { "id": "body", "role": "body", "text": "同一份完整文案只在需求中保存一次。", "must_preserve": true },
+        { "id": "footer", "role": "footer", "text": "本地轻量画板", "must_preserve": true }
+      ],
+      "main_visual": { "description": "一张展示三套版式关系的抽象海报主视觉", "asset_refs": ["asset-main"] },
+      "assets": [ { "id": "asset-main", "role": "main_visual", "source_ref": "fixture-candidate-switch", "status": "described", "description": "抽象几何主视觉" } ],
+      "style": { "direction": "明亮、克制、编辑感", "palette": "白色与淡蓝" },
+      "constraints": { "must_include": [], "must_not_include": [] },
+      "detail_requirements": [ { "id": "D1", "asset_ref": "asset-main", "instruction": "主视觉保持清晰，标记仅作为局部约束。", "category": "focus", "polarity": "positive" } ],
+      "issues": [],
+      "status": "ready"
+    }
+  },
+  {
+    "scenario": "reopen-recovery",
+    "brief": {
+      "schema_version": "poster-brief/1",
+      "brief_id": "stage4-reopen-recovery",
+      "canvas": { "width": 640, "height": 880, "aspect_ratio": "8:11", "source": "stage4-fixture" },
+      "copy": [
+        { "id": "title", "role": "title", "text": "关闭后仍能恢复", "must_preserve": true },
+        { "id": "subtitle", "role": "subtitle", "text": "拖拽修改自动写入本地版本", "must_preserve": true },
+        { "id": "body", "role": "body", "text": "重开时读取同一套 SketchDocument。", "must_preserve": true }
+      ],
+      "main_visual": { "description": "一张带有可拖拽主体框的恢复验证主视觉", "asset_refs": ["asset-main"] },
+      "assets": [ { "id": "asset-main", "role": "main_visual", "source_ref": "fixture-reopen", "status": "described", "description": "可拖拽主视觉框" } ],
+      "style": { "direction": "轻量工具感", "palette": "白色与灰蓝" },
+      "constraints": { "must_include": [], "must_not_include": [] },
+      "detail_requirements": [ { "id": "D1", "asset_ref": "asset-main", "instruction": "主体位置恢复后仍与 D1 锚点对应。", "category": "anchor", "polarity": "positive" } ],
+      "issues": [],
+      "status": "ready"
+    }
+  },
+  {
+    "scenario": "interruption-resume",
+    "brief": {
+      "schema_version": "poster-brief/1",
+      "brief_id": "stage4-interruption-resume",
+      "canvas": { "width": 640, "height": 880, "aspect_ratio": "8:11", "source": "stage4-fixture" },
+      "copy": [
+        { "id": "title", "role": "title", "text": "批次中断可续传", "must_preserve": true },
+        { "id": "subtitle", "role": "subtitle", "text": "只继续未提交的后续批次", "must_preserve": true },
+        { "id": "body", "role": "body", "text": "最后一个连续 revision 始终保留。", "must_preserve": true }
+      ],
+      "main_visual": { "description": "一张按批次逐步出现的线性流程主视觉", "asset_refs": ["asset-main"] },
+      "assets": [ { "id": "asset-main", "role": "main_visual", "source_ref": "fixture-interruption", "status": "described", "description": "线性流程主视觉" } ],
+      "style": { "direction": "清晰、连续、可追踪", "palette": "白色与淡青" },
+      "constraints": { "must_include": [], "must_not_include": [] },
+      "detail_requirements": [ { "id": "D1", "asset_ref": "asset-main", "instruction": "流程锚点按编号映射，不能因为续传重复。", "category": "stream", "polarity": "positive" } ],
+      "issues": [],
+      "status": "ready"
+    }
+  },
+  {
+    "scenario": "revision-conflict",
+    "brief": {
+      "schema_version": "poster-brief/1",
+      "brief_id": "stage4-revision-conflict",
+      "canvas": { "width": 640, "height": 880, "aspect_ratio": "8:11", "source": "stage4-fixture" },
+      "copy": [
+        { "id": "title", "role": "title", "text": "revision 冲突要拒绝", "must_preserve": true },
+        { "id": "subtitle", "role": "subtitle", "text": "用户编辑不会被旧批次覆盖", "must_preserve": true },
+        { "id": "body", "role": "body", "text": "冲突只返回可理解的错误。", "must_preserve": true }
+      ],
+      "main_visual": { "description": "一张表现前后版本关系的分层主视觉", "asset_refs": ["asset-main"] },
+      "assets": [ { "id": "asset-main", "role": "main_visual", "source_ref": "fixture-conflict", "status": "described", "description": "分层版本主视觉" } ],
+      "style": { "direction": "稳健、可审计", "palette": "白色与中性蓝" },
+      "constraints": { "must_include": [], "must_not_include": [] },
+      "detail_requirements": [ { "id": "D1", "asset_ref": "asset-main", "instruction": "版本冲突时保持最后有效位置。", "category": "revision", "polarity": "positive" } ],
+      "issues": [],
+      "status": "ready"
+    }
+  },
+  {
+    "scenario": "invalid-anchor",
+    "brief": {
+      "schema_version": "poster-brief/1",
+      "brief_id": "stage4-invalid-anchor",
+      "canvas": { "width": 640, "height": 880, "aspect_ratio": "8:11", "source": "stage4-fixture" },
+      "copy": [
+        { "id": "title", "role": "title", "text": "删除目标后标记失效", "must_preserve": true },
+        { "id": "subtitle", "role": "subtitle", "text": "失效锚点明确显示并阻止确认", "must_preserve": true },
+        { "id": "body", "role": "body", "text": "右侧说明仍与稳定 detail ID 对应。", "must_preserve": true }
+      ],
+      "main_visual": { "description": "一张以主视觉目标和局部标记为中心的验证海报", "asset_refs": ["asset-main"] },
+      "assets": [ { "id": "asset-main", "role": "main_visual", "source_ref": "fixture-invalid-anchor", "status": "described", "description": "带局部标记的主视觉" } ],
+      "style": { "direction": "明亮、留白、明确状态", "palette": "白色与淡红提示" },
+      "constraints": { "must_include": [], "must_not_include": [] },
+      "detail_requirements": [ { "id": "D1", "asset_ref": "asset-main", "instruction": "主体细节保持清晰，删除目标后必须明确提示失效。", "category": "anchor", "polarity": "positive" }, { "id": "D2", "asset_ref": "asset-main", "instruction": "保留局部材质和边界，不将标记绘入成图。", "category": "material", "polarity": "positive" } ],
+      "issues": [],
+      "status": "ready"
+    }
+  }
+]

@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://layout-guided-ai-imagen.local/contracts/sketch-document.schema.json",
+  "title": "Layout-Guided AI Imagen SketchDocument",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "candidate_id", "name", "revision", "status", "canvas", "objects", "annotations"],
+  "properties": {
+    "schema_version": { "const": "sketch-document/1" },
+    "candidate_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "recommendation": { "type": ["string", "null"] },
+    "revision": { "type": "integer", "minimum": 0 },
+    "status": { "enum": ["waiting", "generating", "complete", "editing", "interrupted", "failed", "confirmed"] },
+    "canvas": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["width", "height", "unit"],
+      "properties": {
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "const": "canvas" }
+      }
+    },
+    "objects": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/object" }
+    },
+    "annotations": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/annotation" }
+    }
+  },
+  "$defs": {
+    "style": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "fill": { "type": "string" },
+        "stroke": { "type": "string" },
+        "stroke_width": { "type": "number", "minimum": 0 },
+        "radius": { "type": "number", "minimum": 0 },
+        "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "font_size": { "type": "number", "exclusiveMinimum": 0 },
+        "font_weight": { "type": ["number", "string"] },
+        "text_align": { "enum": ["left", "center", "right"] },
+        "line_height": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "type", "x", "y", "width", "height", "z_index", "style"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["text", "rectangle", "rounded_rectangle", "ellipse", "image_placeholder", "freehand_path"] },
+        "x": { "type": "number" },
+        "y": { "type": "number" },
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 },
+        "z_index": { "type": "integer" },
+        "style": { "$ref": "#/$defs/style" },
+        "text": { "type": ["string", "null"] },
+        "text_role": { "type": ["string", "null"] },
+        "copy_ref": { "type": ["string", "null"] },
+        "summary": { "type": ["string", "null"] },
+        "label": { "type": ["string", "null"] },
+        "asset_ref": { "type": ["string", "null"] },
+        "asset_role": { "type": ["string", "null"] },
+        "asset_description": { "type": ["string", "null"] },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["x", "y"],
+            "properties": { "x": { "type": "number" }, "y": { "type": "number" } }
+          }
+        },
+        "locked": { "type": "boolean" }
+      }
+    },
+    "point": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y"],
+      "properties": { "x": { "type": "number" }, "y": { "type": "number" } }
+    },
+    "annotation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "label", "start", "end", "target", "note", "category", "polarity", "render_in_final", "status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["detail_marker", "detail_arrow", "detail_note"] },
+        "label": { "type": "string", "pattern": "^D[1-9][0-9]*$" },
+        "start": { "$ref": "#/$defs/point" },
+        "end": { "$ref": "#/$defs/point" },
+        "target": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": {
+            "kind": { "enum": ["object", "region"] },
+            "object_id": { "type": "string" },
+            "region": { "type": "string" }
+          }
+        },
+        "note": { "type": "string", "minLength": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "polarity": { "enum": ["positive", "negative"] },
+        "render_in_final": { "const": false },
+        "status": { "enum": ["valid", "invalid"] },
+        "invalid_reason": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

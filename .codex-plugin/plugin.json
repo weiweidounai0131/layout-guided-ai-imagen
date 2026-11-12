@@ -1,0 +1,36 @@
+{
+  "name": "layout-guided-ai-imagen",
+  "version": "0.2.11",
+  "description": "A model-agnostic Codex plugin for sketch-guided AI image generation. The public workflow Skill is sketch-ai-imagen; the bundle ID remains layout-guided-ai-imagen for compatibility.",
+  "author": {
+    "name": "Local developer"
+  },
+  "keywords": [
+    "ai-image-generation",
+    "poster-layout",
+    "visual-framework",
+    "reference-image",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Sketch AI Imagen",
+    "shortDescription": "Use @sketch-ai-imagen to control composition before AI image generation.",
+    "longDescription": "Use the public @sketch-ai-imagen workflow to review editable visual-framework candidates in a lightweight local canvas, confirm one atomically, and pass it with a complete creative prompt to a host image tool that accepts image inputs. The internal plugin bundle and MCP IDs remain layout-guided-ai-imagen for compatibility.",
+    "developerName": "Local developer",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Local"
+    ],
+    "defaultPrompt": [
+      "Never auto-select/confirm or generate images before a user selects and confirms in the workbench.",
+      "Open workbench and keep claim/wait active until user selects and confirms; default candidate A is not a selection.",
+      "Use @sketch-ai-imagen and runner prepare --session <id> --brief-file <json> to validate and seed candidates before opening the browser.",
+      "When MCP tools are absent, run bundled scripts/layout-guided-ai-imagen.mjs with the shared data root; never hand-write JSON-RPC.",
+      "Treat the confirmed canvas as broad layout guidance, not pixel/style replication; exact copy and explicit locks stay strict.",
+      "Run generation_preflight; stop on allow=false and use only server-persisted user_ui confirmation with supported image inputs."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}

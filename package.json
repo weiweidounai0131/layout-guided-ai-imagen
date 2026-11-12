@@ -1,0 +1,29 @@
+{
+  "name": "layout-guided-ai-imagen",
+  "version": "0.2.11",
+  "private": true,
+  "type": "module",
+  "description": "V1.1 local Fabric.js canvas plugin; public workflow Skill: sketch-ai-imagen.",
+  "engines": {
+    "node": ">=18"
+  },
+  "bin": {
+    "layout-guided-ai-imagen": "scripts/layout-guided-ai-imagen.mjs"
+  },
+  "scripts": {
+    "start": "node mcp/server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser-smoke.mjs",
+    "test:browser:stage4": "node tests/stage4-browser.mjs",
+    "test:browser:cli-listener": "node tests/cli-listener-browser-smoke.mjs",
+    "test:cli-discovery": "node tests/cli-discovery.mjs",
+    "test:host:mcp-apps": "node tests/mcp-apps-host-smoke.mjs",
+    "test:host:app-server": "node tests/app-server-mcp-host-smoke.mjs",
+    "test:cli-runner": "node --test tests/cli-runner.test.mjs",
+    "test:cli-prepare": "node tests/cli-prepare-blackbox.mjs",
+    "test:host:model-cli": "node tests/app-server-cli-runner-smoke.mjs"
+  },
+  "dependencies": {
+    "fabric": "7.4.0"
+  }
+}

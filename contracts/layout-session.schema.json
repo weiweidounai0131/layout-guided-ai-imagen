@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://layout-guided-ai-imagen.local/contracts/layout-session.schema.json",
+  "title": "Layout-Guided AI Imagen Local Layout Session",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "session_id", "status", "active_candidate_id", "poster_brief", "candidates", "layout_requests", "confirmed", "next_cursor"],
+  "properties": {
+    "schema_version": { "const": "layout-session/4" },
+    "session_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+    "status": { "enum": ["layout_ready", "layout_generating", "layout_editing", "layout_change_pending", "layout_confirmed"] },
+    "active_candidate_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+    "poster_brief": { "type": "object" },
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["candidate_id", "name", "recommendation", "status", "document", "initial_document", "modified", "last_saved_revision"],
+        "properties": {
+          "candidate_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+          "name": { "type": "string", "minLength": 1 },
+          "recommendation": { "type": "string" },
+          "archetype_id": { "type": "string", "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+          "archetype_name": { "type": "string", "minLength": 1 },
+          "selection_score": { "type": "number" },
+          "selection_rationale": { "type": "string", "minLength": 1 },
+          "selection_policy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["method", "execution", "model_call", "aesthetic_evidence", "host_role"],
+            "properties": {
+              "method": { "const": "deterministic_scoring" },
+              "execution": { "const": "local_fallback" },
+              "model_call": { "const": false },
+              "aesthetic_evidence": { "const": "unverified" },
+              "host_role": { "const": "inspect_and_explain" }
+            }
+          },
+          "catalog_provenance": { "type": "object" },
+          "difference_axes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 2 },
+          "schematic": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["viewBox", "elements"],
+            "properties": {
+              "viewBox": { "const": "0 0 120 160" },
+              "elements": { "type": "array", "minItems": 2, "items": { "type": "object" } }
+            }
+          },
+          "status": { "enum": ["complete", "generating", "editing", "interrupted", "failed", "confirmed"] },
+          "document": { "type": "object" },
+          "initial_document": { "type": "object" },
+          "modified": { "type": "boolean" },
+          "last_saved_revision": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "layout_requests": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["request_id", "candidate_id", "base_revision", "request_hash", "request_length", "status", "submitted_at"],
+        "properties": {
+          "request_id": { "type": "string", "minLength": 1 },
+          "candidate_id": { "type": "string", "pattern": "^[A-Za-z0-9_-]{1,64}$" },
+          "base_revision": { "type": "integer", "minimum": 0 },
+          "request_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "request_length": { "type": "integer", "minimum": 1 },
+          "status": { "enum": ["pending", "applied", "failed", "cancelled"] },
+          "submitted_at": { "type": "string", "format": "date-time" },
+          "claimed_listener_id": { "type": ["string", "null"] },
+          "claim_expires_at": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    },
+    "layout_listener": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["listener_id", "transport", "status", "token_hash", "lease_expires_at", "last_heartbeat_at", "last_cursor"],
+          "properties": {
+            "listener_id": { "type": "string" },
+            "transport": { "enum": ["mcp_apps_bridge", "browser_fallback", "cli_runner"] },
+            "status": { "enum": ["active", "expired", "released"] },
+            "token_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "lease_expires_at": { "type": "string", "format": "date-time" },
+            "last_heartbeat_at": { "type": "string", "format": "date-time" },
+            "last_cursor": { "type": "integer", "minimum": 0 },
+            "claimed_request_id": { "type": ["string", "null"] }
+          }
+        }
+      ]
+    },
+    "user_selected_candidate": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["candidate_id", "revision", "ui_instance_id", "selected_at"],
+          "properties": {
+            "candidate_id": { "type": "string" },
+            "revision": { "type": "integer", "minimum": 0 },
+            "ui_instance_id": { "type": "string" },
+            "selected_at": { "type": "string", "format": "date-time" }
+          }
+        }
+      ]
+    },
+    "ui_sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ui_instance_id", "token_hash", "public_key_jwk", "challenge", "created_at", "expires_at"],
+        "properties": {
+          "ui_instance_id": { "type": "string" },
+          "token_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "public_key_jwk": { "type": "object" },
+          "challenge": { "type": "string", "minLength": 32 },
+          "created_at": { "type": "string", "format": "date-time" },
+          "expires_at": { "type": "string", "format": "date-time" },
+          "selected_candidate_id": { "type": ["string", "null"] },
+          "selected_revision": { "type": ["integer", "null"], "minimum": 0 }
+        }
+      }
+    },
+    "confirmation_intents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["intent_id", "token_hash", "ui_instance_id", "candidate_id", "revision", "status", "issued_at", "expires_at"],
+        "properties": {
+          "intent_id": { "type": "string" },
+          "token_hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "ui_instance_id": { "type": "string" },
+          "candidate_id": { "type": "string" },
+          "revision": { "type": "integer", "minimum": 0 },
+          "status": { "enum": ["issued", "consumed", "expired", "invalidated"] },
+          "issued_at": { "type": "string", "format": "date-time" },
+          "expires_at": { "type": "string", "format": "date-time" },
+          "consumed_at": { "type": ["string", "null"], "format": "date-time" },
+          "confirmation_id": { "type": ["string", "null"] },
+          "confirmed_by": { "type": ["string", "null"] },
+          "expired_at": { "type": ["string", "null"], "format": "date-time" },
+          "invalidated_at": { "type": ["string", "null"], "format": "date-time" }
+        }
+      }
+    },
+    "confirmation_history": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "confirmed": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schema_version", "session_id", "candidate_id", "layout_version", "revision", "files", "hashes", "dimensions", "confirmed_at"],
+          "properties": {
+            "schema_version": { "const": "layout-confirmation/1" },
+            "session_id": { "type": "string" },
+            "candidate_id": { "type": "string" },
+            "layout_version": { "type": "string", "pattern": "^v[0-9]+$" },
+            "revision": { "type": "integer", "minimum": 0 },
+            "files": { "type": "object", "additionalProperties": { "type": "string" } },
+            "hashes": { "type": "object", "additionalProperties": { "type": "string", "pattern": "^[a-f0-9]{64}$" } },
+            "dimensions": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["width", "height"],
+              "properties": { "width": { "type": "number", "exclusiveMinimum": 0 }, "height": { "type": "number", "exclusiveMinimum": 0 } }
+            },
+            "confirmed_at": { "type": "string", "format": "date-time" }
+          }
+        }
+      ]
+    },
+    "next_cursor": { "type": "integer", "minimum": 0 },
+    "streams": { "type": "object" }
+  }
+}

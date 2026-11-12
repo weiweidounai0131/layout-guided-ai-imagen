@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://layout-guided-ai-imagen.local/contracts/poster-brief.schema.json",
+  "title": "Layout-Guided AI Imagen PosterBrief",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "canvas", "copy", "main_visual"],
+  "properties": {
+    "schema_version": { "const": "poster-brief/1" },
+    "brief_id": { "type": "string", "minLength": 1 },
+    "canvas": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "width": { "type": "number", "exclusiveMinimum": 0 },
+        "height": { "type": "number", "exclusiveMinimum": 0 },
+        "aspect_ratio": { "type": "string", "pattern": "^\\d+(?:\\.\\d+)?\\s*:\\s*\\d+(?:\\.\\d+)?$" },
+        "orientation": { "enum": ["portrait", "landscape", "square"] },
+        "source": { "type": "string" }
+      },
+      "anyOf": [
+        { "required": ["width", "height"] },
+        { "required": ["aspect_ratio"] }
+      ]
+    },
+    "copy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["text"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "role": { "type": "string" },
+          "text": { "type": "string", "minLength": 1 },
+          "must_preserve": { "type": "boolean" },
+          "priority": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "purpose": { "type": "string" },
+    "main_visual": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["description"],
+      "properties": {
+        "description": { "type": "string", "minLength": 1 },
+        "asset_refs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "style": {
+      "anyOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "purpose": { "type": "string" },
+            "direction": { "type": "string" },
+            "medium": { "type": "string" },
+            "palette": { "type": "string" },
+            "lighting": { "type": "string" },
+            "materials": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "role"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "role": { "type": "string", "minLength": 1 },
+          "description": { "type": "string" },
+          "source_ref": { "type": "string" },
+          "required": { "type": "boolean" },
+          "status": { "enum": ["missing", "pending", "ready", "readable", "described", "failed"] },
+          "error_type": { "type": "string" }
+        }
+      }
+    },
+    "references": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "image_refs": { "type": "array", "items": { "$ref": "#/$defs/reference" } },
+        "style_refs": { "type": "array", "items": { "$ref": "#/$defs/reference" } },
+        "layout_refs": { "type": "array", "items": { "$ref": "#/$defs/reference" } }
+      }
+    },
+    "layout_reference": { "$ref": "#/$defs/reference" },
+    "detail_requirements": { "type": "array", "items": { "type": "object" } },
+    "constraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "must_include": { "type": "array", "items": { "type": "string" } },
+        "must_not_include": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "attachments": { "type": "array", "items": { "$ref": "#/$defs/attachment" } },
+    "conflicts": { "type": "array", "items": { "$ref": "#/$defs/conflict" } },
+    "issues": { "type": "array", "items": { "type": "object" } },
+    "status": { "enum": ["needs_input", "conflict", "attachment_error", "ready"] }
+  },
+  "$defs": {
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ref"],
+      "properties": {
+        "ref": { "type": "string", "minLength": 1 },
+        "role": { "type": "string" },
+        "description": { "type": "string" },
+        "status": { "enum": ["missing", "pending", "ready", "readable", "described", "failed"] }
+      }
+    },
+    "attachment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "status"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "role": { "type": "string" },
+        "source_ref": { "type": "string" },
+        "required": { "type": "boolean" },
+        "status": { "enum": ["missing", "pending", "ready", "readable", "described", "failed"] },
+        "error_type": { "type": "string" }
+      }
+    },
+    "conflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "severity", "status", "detail"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "type": "string" },
+        "fields": { "type": "array", "items": { "type": "string" } },
+        "severity": { "enum": ["warning", "blocking"] },
+        "status": { "enum": ["unresolved", "resolved"] },
+        "detail": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

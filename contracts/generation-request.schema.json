@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://layout-guided-ai-imagen.local/contracts/generation-request.schema.json",
+  "title": "Layout-Guided AI Imagen generation request",
+  "description": "Server-verified generation-request/3. The confirmed framework guides broad structure; it does not freeze pixel or canvas typography styling.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "session_id",
+    "candidate_id",
+    "layout_version",
+    "confirmation_id",
+    "confirmed_by",
+    "confirmed_files",
+    "visual_framework",
+    "creative_prompt",
+    "dispatch"
+  ],
+  "properties": {
+    "schema_version": { "const": "generation-request/3" },
+    "session_id": { "type": "string", "minLength": 1 },
+    "candidate_id": { "type": "string", "minLength": 1 },
+    "layout_version": { "type": "string", "minLength": 1 },
+    "confirmation_id": { "type": "string", "minLength": 1 },
+    "confirmed_by": { "const": "user_ui" },
+    "confirmed_files": {
+      "type": "object",
+      "required": ["clean_png_ref", "annotated_png_ref", "clean_png_sha256", "annotated_png_sha256"],
+      "properties": {
+        "sketch_json_ref": { "type": ["string", "null"] },
+        "clean_png_ref": { "type": "string", "minLength": 1 },
+        "annotated_png_ref": { "type": "string", "minLength": 1 },
+        "sketch_json_sha256": { "type": ["string", "null"] },
+        "clean_png_sha256": { "type": "string", "minLength": 1 },
+        "annotated_png_sha256": { "type": "string", "minLength": 1 },
+        "detail_constraints_sha256": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "visual_framework": {
+      "type": "object",
+      "required": ["clean", "annotated", "controls", "excludes"],
+      "properties": {
+        "clean": { "type": "object" },
+        "annotated": { "type": "object" },
+        "controls": { "type": "array", "items": { "type": "string" } },
+        "excludes": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "creative_prompt": {
+      "type": "object",
+      "required": ["text", "verbatim_copy", "hard_constraints", "soft_layout_guidance", "creative_freedom", "layout_semantics"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "verbatim_copy": { "type": "array", "items": { "type": "string" } },
+        "hard_constraints": { "type": "array", "items": { "type": "string" } },
+        "soft_layout_guidance": { "type": "array", "items": { "type": "string" } },
+        "creative_freedom": { "type": "array", "items": { "type": "string" } },
+        "layout_semantics": { "const": "broad_structure_guidance_not_pixel_replication" }
+      },
+      "additionalProperties": true
+    },
+    "dispatch": { "type": "object" }
+  },
+  "additionalProperties": true
+}

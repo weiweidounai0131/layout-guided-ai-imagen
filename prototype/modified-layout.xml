@@ -1,0 +1,22 @@
+<mxfile host="embed.diagrams.net" version="24.7.17">
+  <diagram id="stage0-sample-modified" name="Page-1">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Layout-Guided AI Imagen" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#0B5FFF;fontColor=#FFFFFF;fontSize=28;fontStyle=1;strokeColor=#0B5FFF;" vertex="1" parent="1">
+          <mxGeometry x="80" y="120" width="760" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="main-visual" value="主视觉占位区" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#DCEBFF;fontColor=#11335B;fontSize=24;strokeColor=#0B5FFF;strokeWidth=2;" vertex="1" parent="1">
+          <mxGeometry x="150" y="300" width="620" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="body" value="辅助文案区 · 预计 3 行" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F8FC;fontColor=#26384D;fontSize=20;strokeColor=#A9BDD8;" vertex="1" parent="1">
+          <mxGeometry x="120" y="720" width="700" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="logo-qr" value="Logo / QR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;fontColor=#26384D;fontSize=16;strokeColor=#6B7E95;" vertex="1" parent="1">
+          <mxGeometry x="700" y="860" width="120" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
